@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: postgres1
+  name: postgres1
+  namespace: subscriptions
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    service: postgres1
+status:
+  loadBalancer: {}    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: postgres1
+  name: postgres1
+  namespace: subscriptions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: postgres1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        service: postgres1
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: t35tP455w0rd
+            - name: POSTGRES_DB
+              value: subscriptions
+            - name: POSTGRES_HOST
+              value: postgres1
+          image: postgres
+          name: postgres1
+          ports:
+            - containerPort: 5432
+          resources: {}
+      restartPolicy: Always
