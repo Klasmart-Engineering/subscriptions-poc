@@ -54,6 +54,15 @@ type LogResponse struct {
 	Limit   int    `json:"limit"`
 }
 
+type Healthcheck struct {
+	Up      bool   `json:"up"`
+	Details string `json:"details"`
+}
+
+func (*Healthcheck) Render(w http.ResponseWriter, r *http.Request) error {
+	return nil
+}
+
 func (*LogResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }

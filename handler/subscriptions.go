@@ -8,6 +8,14 @@ import (
 	models "subscriptions.demo/models"
 )
 
+func healthcheck(router chi.Router) {
+	router.Get("/", dbHealthcheck)
+}
+
+func liveness(router chi.Router) {
+	router.Get("/", applicationLiveness)
+}
+
 func subscriptionTypes(router chi.Router) {
 	router.Get("/", getAllSubscriptionTypes)
 }
@@ -18,6 +26,28 @@ func subscriptionActions(router chi.Router) {
 
 func logAction(router chi.Router) {
 	router.Post("/", logUserAction)
+}
+
+func dbHealthcheck(w http.ResponseWriter, r *http.Request) {
+	up, err := dbInstance.Healthcheck()
+
+	if err != nil || !up {
+		render.Render(w, r, ServerErrorRenderer(err))
+		return
+	}
+
+	health := models.Healthcheck{Up: true, Details: "Successfully connected to the database"}
+	if err := render.Render(w, r, &health); err != nil {
+		render.Render(w, r, ErrorRenderer(err))
+	}
+}
+
+func applicationLiveness(w http.ResponseWriter, r *http.Request) {
+
+	health := models.Healthcheck{Up: true, Details: "Application up"}
+	if err := render.Render(w, r, &health); err != nil {
+		render.Render(w, r, ErrorRenderer(err))
+	}
 }
 
 func getAllSubscriptionTypes(w http.ResponseWriter, r *http.Request) {

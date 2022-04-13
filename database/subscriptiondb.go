@@ -6,6 +6,19 @@ import (
 	"subscriptions.demo/models"
 )
 
+func (db Database) Healthcheck() (bool, error) {
+	var up int
+	if err := db.Conn.QueryRow(`
+			SELECT 1 AS up 
+			FROM subscription_account`).Scan(&up); err != nil {
+		if err == sql.ErrNoRows {
+			return false, fmt.Errorf("unable to get connection to the database: %s", err)
+		}
+	}
+
+	return up == 1, nil
+}
+
 func (db Database) GetAllSubscriptions() (*models.SubscriptionTypeList, error) {
 	list := &models.SubscriptionTypeList{}
 	rows, err := db.Conn.Query("SELECT * FROM subscription_type ORDER BY id DESC")
