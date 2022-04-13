@@ -11,7 +11,7 @@ echo
 
 for i in $(seq 1 "$requestCount")
 do
-   http_response=$(curl -s -o response.json -w "%{http_code}" -X POST 'http://localhost:8080/log' \
+   http_response=$(curl -s -o response.json -w "%{http_code}" -X POST 'http://localhost:8010/log' \
                                                               -H 'Content-Type: application/json' \
                                                               -d '{
                                                                   "GUID": "'"$GUID"'",

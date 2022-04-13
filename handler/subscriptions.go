@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
-	"log"
 	"net/http"
 	models "subscriptions.demo/models"
 )
@@ -44,7 +43,6 @@ func getAllSubscriptionActions(w http.ResponseWriter, r *http.Request) {
 }
 
 func logUserAction(w http.ResponseWriter, r *http.Request) {
-	log.Println("LOGGING USER ACTION")
 	var subscriptionUserAction models.SubscriptionUserAction
 	json.NewDecoder(r.Body).Decode(&subscriptionUserAction)
 

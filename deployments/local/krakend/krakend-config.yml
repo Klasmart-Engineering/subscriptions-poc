@@ -13,7 +13,7 @@ data:
       "timeout": "3000ms",
       "cache_ttl": "300s",
       "host": [
-        "http://example-go-test:8080"
+        "http://go-service:8080"
       ],
       "output_encoding": "json",
       "name": "MyTest",
@@ -35,6 +35,24 @@ data:
           "querystring_params": [
             
           ]
-        }
+        },
+      {
+            "endpoint": "/subscription-types",
+            "method": "GET",
+            "output_encoding": "json",
+            "extra_config": {},
+            "backend": [
+              {
+                "url_pattern": "/subscription-types",
+                "method": "GET",
+                "whitelist": [
+                ],
+                "extra_config": {}
+              }
+            ],
+            "querystring_params": [
+      
+            ]
+          }
       ]
     }

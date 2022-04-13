@@ -20,11 +20,8 @@ type Database struct {
 
 func Initialize(username, password, database, host string) (Database, error) {
 	db := Database{}
-	//TODO update
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		"postgres1", PORT, "postgres", "t35tP455w0rd", "subscriptions")
-	log.Println("HELLO")
-	log.Println(dsn)
+		host, PORT, username, password, database)
 	conn, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return db, err

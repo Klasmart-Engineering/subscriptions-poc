@@ -25,6 +25,7 @@ func main() {
 		os.Getenv("POSTGRES_PASSWORD"),
 		os.Getenv("POSTGRES_DB"),
 		os.Getenv("POSTGRES_HOST")
+
 	database, err := db.Initialize(dbUser, dbPassword, dbName, dbHost)
 	if err != nil {
 		log.Fatalf("Could not set up database: %v", err)
