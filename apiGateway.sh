@@ -17,7 +17,8 @@ do
                                                                   "GUID": "'"$GUID"'",
                                                                   "subscriptionAccountId": "123",
                                                                   "actionType": "API Call",
-                                                                  "usageAmount": 1
+                                                                  "usageAmount": 1,
+                                                                  "product": "Simple Teacher Module"
 
                                                               }')
 

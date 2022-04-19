@@ -54,14 +54,15 @@ func (db Database) GetAllSubscriptionActions() (*models.SubscriptionActionList, 
 }
 
 func (db Database) LogUserAction(userAction models.SubscriptionUserAction) {
+
 	stmt, es := db.Conn.Prepare(`
-			INSERT INTO subscription_account_user_log (GUID, subscription_account_id, action_type, usage, interaction_at)
-			VALUES ($1, $2, $3, $4, NOW())`)
+			INSERT INTO subscription_account_user_log (GUID, subscription_account_id, action_type, usage, product, interaction_at)
+			VALUES ($1, $2, $3, $4, $5, NOW())`)
 	if es != nil {
 		panic(es.Error())
 	}
 
-	_, er := stmt.Exec(userAction.GUID, userAction.SubscriptionAccountId, userAction.ActionType, userAction.UsageAmount)
+	_, er := stmt.Exec(userAction.GUID, userAction.SubscriptionAccountId, userAction.ActionType, userAction.UsageAmount, userAction.Product)
 	if er != nil {
 		panic(er.Error())
 	}
@@ -74,8 +75,8 @@ func (db Database) CountUserInteractionsForSubscription(userAction models.Subscr
 	if err := db.Conn.QueryRow(`
 			SELECT COUNT(1) AS user_interactions 
 			FROM subscription_account_user_log 
-			WHERE GUID = $1`,
-		userAction.GUID).Scan(&countUserInteractions); err != nil {
+			WHERE GUID = $1 AND product = $2 `,
+		userAction.GUID, userAction.Product).Scan(&countUserInteractions); err != nil {
 		if err == sql.ErrNoRows {
 			return countUserInteractions, fmt.Errorf("unknown count on user: %s", userAction.GUID)
 		}
@@ -84,14 +85,16 @@ func (db Database) CountUserInteractionsForSubscription(userAction models.Subscr
 
 }
 
-func (db Database) GetThresholdForSubscription(userAction models.SubscriptionUserAction) (int, error) {
+func (db Database) GetThresholdForSubscriptionProduct(userAction models.SubscriptionUserAction) (int, error) {
 
 	var subscriptionThreshold int
 	if err := db.Conn.QueryRow(`
-			SELECT threshold 
-			FROM subscription_account 
-			WHERE account_holder_id = $1`,
-		userAction.SubscriptionAccountId).Scan(&subscriptionThreshold); err != nil {
+			SELECT sap.threshold 
+			FROM subscription_account_product sap 
+			JOIN subscription_account sa
+			  ON sap.subscription_id = sa.id
+			WHERE sa.account_holder_id = $1 AND sap.product = $2 `,
+		userAction.SubscriptionAccountId, userAction.Product).Scan(&subscriptionThreshold); err != nil {
 		if err == sql.ErrNoRows {
 			return subscriptionThreshold, fmt.Errorf("unknown threshold on user: %s", userAction.GUID)
 		}

@@ -92,7 +92,7 @@ func logUserAction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var response models.LogResponse
-	threshold, er := dbInstance.GetThresholdForSubscription(subscriptionUserAction)
+	threshold, er := dbInstance.GetThresholdForSubscriptionProduct(subscriptionUserAction)
 	if er != nil {
 		panic(er)
 	}
