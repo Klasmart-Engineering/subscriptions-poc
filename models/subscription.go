@@ -71,4 +71,5 @@ type SubscriptionUserAction struct {
 	GUID                  string `json:"GUID"`
 	SubscriptionAccountId string `json:"subscriptionAccountId"`
 	ActionType            string `json:"actionType"`
+	UsageAmount           int    `json:"usageAmount"`
 }

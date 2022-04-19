@@ -16,13 +16,14 @@ do
                                                               -d '{
                                                                   "GUID": "'"$GUID"'",
                                                                   "subscriptionAccountId": "123",
-                                                                  "actionType": "API Call"
+                                                                  "actionType": "API Call",
+                                                                  "usageAmount": 1
 
                                                               }')
 
    echo "Status:   "  "$http_response"
    responseBody=$(cat response.json | jq . )
-   echo "Response: " $responseBody
+   echo "Response: " "$responseBody"
    echo
 done
 

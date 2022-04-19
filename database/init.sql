@@ -7,8 +7,8 @@ CREATE TABLE if not exists subscription_type
 );
 
 INSERT INTO subscription_type (id, name)
-VALUES (1, 'Limited'),
-       (2, 'Unlimited');
+VALUES (1, 'Capped'),
+       (2, 'Uncapped');
 
 
 CREATE TABLE if not exists subscription_action
@@ -49,6 +49,7 @@ CREATE TABLE if not exists subscription_account_user_log
     GUID                    int,
     subscription_account_id int                                                NOT NULL,
     action_type             varchar                                            NOT NULL,
+    usage                   int                                                NOT NULL,
     interaction_at          timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (GUID, action_type, interaction_at)
 --     CONSTRAINT account_holder_id FOREIGN KEY (subscription_account_id) REFERENCES subscription_account (account_holder_id)
