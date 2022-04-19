@@ -19,6 +19,7 @@ func NewHandler(db db.Database) http.Handler {
 	router.Route("/log-action", logAction)
 	router.Route("/healthcheck", healthcheck)
 	router.Route("/liveness", liveness)
+	router.Route("/evaluate-subscriptions", evaluateSubscriptions)
 	return router
 }
 func methodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
+	"log"
 	"net/http"
 	models "subscriptions.demo/models"
 )
@@ -26,6 +27,14 @@ func subscriptionActions(router chi.Router) {
 
 func logAction(router chi.Router) {
 	router.Post("/", logUserAction)
+}
+
+func evaluateSubscriptions(router chi.Router) {
+	router.Post("/", evaluateSubscriptionsUsage)
+}
+
+func evaluateSubscriptionsUsage(w http.ResponseWriter, r *http.Request) {
+	log.Println("EVALUATING USAGE")
 }
 
 func dbHealthcheck(w http.ResponseWriter, r *http.Request) {
