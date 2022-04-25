@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"subscriptions.demo/database"
 	"subscriptions.demo/handler"
+	redpanda "subscriptions.demo/messaging"
 	"syscall"
 	"time"
 )
@@ -40,6 +41,7 @@ func main() {
 		server.Serve(listener)
 	}()
 	defer Stop(server)
+	redpanda.Consume(database)
 	log.Printf("Started server on %s", addr)
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)

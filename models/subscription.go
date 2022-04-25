@@ -5,6 +5,31 @@ import (
 	"net/http"
 )
 
+type EvaluatedSubscription struct {
+	SubscriptionId int                            `json:"subscriptionId"`
+	Products       []EvaluatedSubscriptionProduct `json:"products"`
+	DateFromEpoch  string                         `json:"dateFromEpoch"`
+	DateToEpoch    string                         `json:"dateToEpoch"`
+}
+
+type EvaluatedSubscriptionProduct struct {
+	Name        string `json:"name"`
+	Type        string `json:"type"`
+	UsageAmount int    `json:"usageAmount"`
+}
+
+type SubscriptionEvaluation struct {
+	ID                int
+	Product           string
+	Threshold         int
+	Name              string
+	LastProcessedTime string
+}
+
+type SubscriptionEvaluations struct {
+	SubscriptionEvaluations []SubscriptionEvaluation
+}
+
 type SubscriptionType struct {
 	ID        int    `json:"id"`
 	Name      string `json:"name"`
@@ -69,8 +94,13 @@ func (*LogResponse) Render(w http.ResponseWriter, r *http.Request) error {
 
 type SubscriptionUserAction struct {
 	GUID                  string `json:"GUID"`
-	SubscriptionAccountId string `json:"subscriptionAccountId"`
+	SubscriptionAccountId int    `json:"subscriptionAccountId"`
 	ActionType            string `json:"actionType"`
 	UsageAmount           int    `json:"usageAmount"`
 	Product               string `json:"product"`
+}
+
+type SubscriptionChange struct {
+	SubscriptionId int  `json:"subscriptionId"`
+	Active         bool `json:"active"`
 }

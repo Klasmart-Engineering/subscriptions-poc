@@ -15,15 +15,15 @@ do
                                                               -H 'Content-Type: application/json' \
                                                               -d '{
                                                                   "GUID": "'"$GUID"'",
-                                                                  "subscriptionAccountId": "123",
+                                                                  "subscriptionAccountId": 123,
                                                                   "actionType": "API Call",
                                                                   "usageAmount": 1,
                                                                   "product": "Simple Teacher Module"
 
                                                               }')
 
-   echo "Status:   "  "$http_response"
-   responseBody=$(cat response.json | jq . )
+#   echo "Status:   "  "$http_response"
+   responseBody=$(cat response.json )
    echo "Response: " "$responseBody"
    echo
 done
