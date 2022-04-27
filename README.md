@@ -79,3 +79,11 @@
 ```
   ./run-docker.sh
 ```
+
+##### To remote debug locally in docker
+
+```
+  ./run-docker.sh debug
+```
+- Then add the following configuration in Goland (TODO also add instructions for VScode)
+![img.png](img.png)
